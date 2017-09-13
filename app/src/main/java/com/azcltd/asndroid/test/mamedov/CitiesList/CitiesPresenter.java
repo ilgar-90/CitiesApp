@@ -51,5 +51,9 @@ public class CitiesPresenter extends BasePresenter<ICitiesInteractor, ICitiesVie
         loadedCities = cities;
         this.view.hideProgressDialog();
         this.view.onGetCities(cities);
+        if (cities.length == 0)
+            this.view.showEmptyView();
+        else
+            this.view.hideEmptyView();
     }
 }

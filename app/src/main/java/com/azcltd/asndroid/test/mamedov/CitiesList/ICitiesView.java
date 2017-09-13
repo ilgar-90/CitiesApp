@@ -11,4 +11,6 @@ public interface ICitiesView {
     void hideProgressDialog();
     void showError(String messageToDisplay);
     void onGetCities(City[] cities);
+    void showEmptyView();
+    void hideEmptyView();
 }

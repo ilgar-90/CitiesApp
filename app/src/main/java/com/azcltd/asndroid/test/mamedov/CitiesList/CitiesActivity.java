@@ -8,6 +8,9 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+
 import com.azcltd.asndroid.test.mamedov.API.DataClasses.City;
 import com.azcltd.asndroid.test.mamedov.Adapters.CitiesListAdapter;
 import com.azcltd.asndroid.test.mamedov.BasePresenter;
@@ -17,6 +20,7 @@ import com.azcltd.asndroid.test.mamedov.R;
 public class CitiesActivity extends AppCompatActivity implements ICitiesView{
     ProgressDialog mProgress;
     private RecyclerView mRecyclerView;
+    private TextView tvEmpty;
     private CitiesListAdapter mAdapter;
     ICitiesPresenter mPresenter;
 
@@ -29,6 +33,7 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesView{
             mPresenter = PresenterHolder.getInstance().restorePresenter(savedInstanceState);
         }
         setContentView(R.layout.activity_cities_list);
+        tvEmpty = (TextView)findViewById(R.id.tvEmpty);
         mRecyclerView = (RecyclerView) findViewById(R.id.rvCities);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(CitiesActivity.this, LinearLayoutManager.VERTICAL, false));
         mAdapter = new CitiesListAdapter(new City[0], this, mPresenter);
@@ -88,6 +93,18 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesView{
     @Override
     public void onGetCities(City[] cities) {
         mAdapter.setCities(cities);
+    }
+
+    @Override
+    public void showEmptyView() {
+        tvEmpty.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideEmptyView() {
+        tvEmpty.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
