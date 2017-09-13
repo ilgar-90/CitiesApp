@@ -11,11 +11,11 @@ import com.azcltd.asndroid.test.mamedov.CityDetails.DetailsActivity;
  * Created by ilgar on 9/12/2017.
  */
 
-public class CitiesPresenter extends BasePresenter<ICitiesModel, ICitiesView> implements ICitiesPresenter, ICitiesModel.OnGetCitiesListener {
+public class CitiesPresenter extends BasePresenter<ICitiesInteractor, ICitiesView> implements ICitiesPresenter, ICitiesInteractor.OnGetCitiesListener {
     private City[] loadedCities;
 
     public CitiesPresenter() {
-        this.model = new CitiesModel();
+        this.model = new CitiesInteractor();
     }
 
     @Override
@@ -27,8 +27,10 @@ public class CitiesPresenter extends BasePresenter<ICitiesModel, ICitiesView> im
 
     @Override
     public void getCitiesList() {
-        if (loadedCities != null)
+        if (loadedCities != null){
+            this.view.onGetCities(loadedCities);
             return;
+        }
         this.view.showProgressDialog("Getting cities list...");
         this.model.getCities(this);
     }
@@ -38,11 +40,10 @@ public class CitiesPresenter extends BasePresenter<ICitiesModel, ICitiesView> im
         super.bindView((ICitiesView) view);
     }
 
-
     @Override
     public void onError(String error) {
         this.view.hideProgressDialog();
-        this.view.showMessage(error);
+        this.view.showError(error);
     }
 
     @Override

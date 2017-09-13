@@ -1,7 +1,6 @@
 package com.azcltd.asndroid.test.mamedov.API.DataClasses;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
@@ -14,7 +13,8 @@ public class City implements Serializable {
 
     private Location location;
 
-    private String image_url;
+    @SerializedName("image_url")
+    private String imageUrl;
 
     private String description;
 
@@ -42,14 +42,14 @@ public class City implements Serializable {
         this.location = location;
     }
 
-    public String getImage_url ()
+    public String getImageUrl()
     {
-        return image_url;
+        return imageUrl;
     }
 
-    public void setImage_url (String image_url)
+    public void setImageUrl(String imageUrl)
     {
-        this.image_url = image_url;
+        this.imageUrl = imageUrl;
     }
 
     public String getDescription ()

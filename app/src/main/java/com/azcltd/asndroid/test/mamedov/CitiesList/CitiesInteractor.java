@@ -12,7 +12,7 @@ import retrofit2.Response;
  * Created by ilgar on 9/12/2017.
  */
 
-public class CitiesModel implements ICitiesModel {
+public class CitiesInteractor implements ICitiesInteractor {
     @Override
     public void getCities(final OnGetCitiesListener listener) {
         CitiesAPIHandler.getCities(new Callback<DataResponse>() {
@@ -20,15 +20,9 @@ public class CitiesModel implements ICitiesModel {
             public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     City[] cities = response.body().getCities();
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     listener.onSuccess(cities);
                 }
             }
-
             @Override
             public void onFailure(Call<DataResponse> call, Throwable t) {
                 listener.onError(t.getMessage());

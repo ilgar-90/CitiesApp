@@ -37,47 +37,39 @@ public class CitiesListAdapter extends RecyclerView.Adapter<CitiesListAdapter.Si
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.city_list_item, null);
-
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         v.setLayoutParams(lp);
-
-
         SingleItemRowHolder mh = new SingleItemRowHolder(v);
         return mh;
     }
 
     @Override
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
-
         City city = cities[i];
-
-        holder.city_name.setText(city.getName());
-        Picasso.with(mContext).load(String.format("%s%s", CitiesAPIHandler.WEB_SERVICE_URL, city.getImage_url())).fit().into(holder.city_image);
+        holder.tvCityName.setText(city.getName());
+        Picasso.with(mContext).load(String.format("%s%s", CitiesAPIHandler.WEB_SERVICE_URL, city.getImageUrl())).fit().into(holder.ivCityImage);
     }
 
     @Override
     public int getItemCount() {
-        return cities.length;
+        return cities != null ? cities.length : 0;
     }
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
 
-        protected TextView city_name;
-        protected ImageView city_image;
-
+        protected TextView tvCityName;
+        protected ImageView ivCityImage;
 
         public SingleItemRowHolder(View view) {
             super(view);
-            this.city_name = (TextView) view.findViewById(R.id.cityName);
-            this.city_image = (ImageView) view.findViewById(R.id.cityImage);
+            this.tvCityName = (TextView) view.findViewById(R.id.cityName);
+            this.ivCityImage = (ImageView) view.findViewById(R.id.cityImage);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mPresenter.openCityDetails(cities[getAdapterPosition()]);
                 }
             });
-
         }
-
     }
 }

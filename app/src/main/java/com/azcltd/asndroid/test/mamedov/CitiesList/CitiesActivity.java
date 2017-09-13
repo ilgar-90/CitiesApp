@@ -1,11 +1,13 @@
 package com.azcltd.asndroid.test.mamedov.CitiesList;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
-import android.widget.Toast;
 import com.azcltd.asndroid.test.mamedov.API.DataClasses.City;
 import com.azcltd.asndroid.test.mamedov.Adapters.CitiesListAdapter;
 import com.azcltd.asndroid.test.mamedov.BasePresenter;
@@ -13,31 +15,24 @@ import com.azcltd.asndroid.test.mamedov.PresenterHolder;
 import com.azcltd.asndroid.test.mamedov.R;
 
 public class CitiesActivity extends AppCompatActivity implements ICitiesView{
-
     ProgressDialog mProgress;
     private RecyclerView mRecyclerView;
     private CitiesListAdapter mAdapter;
-
     ICitiesPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (savedInstanceState == null) {
             mPresenter = new CitiesPresenter();
         } else {
             mPresenter = PresenterHolder.getInstance().restorePresenter(savedInstanceState);
         }
-
         setContentView(R.layout.activity_cities_list);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.cities_rv);
+        mRecyclerView = (RecyclerView) findViewById(R.id.rvCities);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(CitiesActivity.this, LinearLayoutManager.VERTICAL, false));
-
         mAdapter = new CitiesListAdapter(new City[0], this, mPresenter);
         mRecyclerView.setAdapter(mAdapter);
-
     }
 
     @Override
@@ -54,7 +49,7 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesView{
     }
 
     public void showProgressDialog(String messageToDisplay){
-        mProgress = new ProgressDialog(this);
+        mProgress = new ProgressDialog(this, R.style.DialogStyle);
         mProgress.setMessage(messageToDisplay);
         mProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgress.setIndeterminate(true);
@@ -64,13 +59,30 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesView{
     }
 
     public void hideProgressDialog(){
-        mProgress.hide();
+        if (mProgress != null) {
+            mProgress.dismiss();
+            mProgress = null;
+        }
     }
 
-
     @Override
-    public void showMessage(String messageToDisplay) {
-        Toast.makeText(CitiesActivity.this, messageToDisplay, Toast.LENGTH_LONG).show();
+    public void showError(String messageToDisplay) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.DialogStyle));
+        builder.setMessage(messageToDisplay)
+                .setTitle("Can't get list of cities");
+        builder.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                mPresenter.getCitiesList();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     @Override
@@ -81,8 +93,6 @@ public class CitiesActivity extends AppCompatActivity implements ICitiesView{
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         PresenterHolder.getInstance().savePresenter((BasePresenter<?, ?>) mPresenter, outState);
     }
-
 }

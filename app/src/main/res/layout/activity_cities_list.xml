@@ -11,7 +11,7 @@
     tools:context="com.azcltd.asndroid.test.mamedov.CitiesList.CitiesActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/cities_rv"
+        android:id="@+id/rvCities"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

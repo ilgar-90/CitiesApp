@@ -19,5 +19,4 @@ public abstract class BasePresenter<M, V> {
     public void unbindView() {
         this.view = null;
     }
-
 }

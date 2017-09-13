@@ -9,6 +9,6 @@ import com.azcltd.asndroid.test.mamedov.API.DataClasses.City;
 public interface ICitiesView {
     void showProgressDialog(String messageToDisplay);
     void hideProgressDialog();
-    void showMessage(String messageToDisplay);
+    void showError(String messageToDisplay);
     void onGetCities(City[] cities);
 }
