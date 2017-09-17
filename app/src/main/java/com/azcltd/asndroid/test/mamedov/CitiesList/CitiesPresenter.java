@@ -44,6 +44,7 @@ public class CitiesPresenter extends BasePresenter<ICitiesInteractor, ICitiesVie
     public void onError(String error) {
         this.view.hideProgressDialog();
         this.view.showError(error);
+        this.view.showEmptyView();
     }
 
     @Override
